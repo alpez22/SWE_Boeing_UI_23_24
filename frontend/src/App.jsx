@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react'
 import './App.css'
-import { Card, Container, Row, Col, Image } from 'react-bootstrap';
+import PepsiApp from './structural/PepsiApp';
 
 
 function App() {
-
-  return null;
+  return <PepsiApp/>;
 }
 
 export default App
