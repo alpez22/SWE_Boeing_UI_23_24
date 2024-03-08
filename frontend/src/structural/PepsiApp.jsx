@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Col, Card, Button, Form } from "react-bootstrap";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 function PepsiApp() {
     const [serial, setSerial] = useState("");
     const [installation, setInstallation] = useState("");
-    // Initialize canisters from localStorage if available, else default to empty array
     const [canisters, setCanisters] = useState(() => {
         const savedCanisters = localStorage.getItem("canisters");
         return savedCanisters ? JSON.parse(savedCanisters) : [];
     });
 
     useEffect(() => {
-        // Store canisters in localStorage whenever they change
         localStorage.setItem("canisters", JSON.stringify(canisters));
     }, [canisters]);
 
@@ -23,9 +23,17 @@ function PepsiApp() {
     
         const newCanister = { serial, installation };
         setCanisters([...canisters, newCanister]);
-        // Reset form fields
         setSerial("");
         setInstallation("");
+    };
+
+    const deleteCanister = (indexToDelete) => {
+        // Use window.confirm to ask for confirmation
+        const isConfirmed = window.confirm("Are you sure you want to delete this canister?");
+        if (isConfirmed) {
+            const filteredCanisters = canisters.filter((_, index) => index !== indexToDelete);
+            setCanisters(filteredCanisters);
+        }
     };
 
     return (
@@ -50,10 +58,12 @@ function PepsiApp() {
                 <Button onClick={createCanister}>Add Canister</Button>
             </Col>
             {canisters.map((canister, index) => (
-              <Card key={index} style={{ marginTop: '10px' }}>
+              <Card key={index} style={{ marginTop: '10px', position: 'relative' }}>
+                <Button style={{ position: 'absolute', top: 0, right: 0, backgroundColor: 'white', color: 'black', borderColor: 'red' }} onClick={() => deleteCanister(index)}>
+                  <FontAwesomeIcon icon={faTrashAlt} />
+                </Button>
                 <Card.Body>
-                  <Card.Title>Canister {index + 1}</Card.Title>
-                  <Card.Text>Serial: {canister.serial}</Card.Text>
+                  <Card.Title>Serial: {canister.serial}</Card.Title>
                   <Card.Text>Installation Date: {canister.installation}</Card.Text>
                 </Card.Body>
               </Card>
