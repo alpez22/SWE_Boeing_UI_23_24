@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Col, Card, Button, Form } from "react-bootstrap";
 
 function PepsiApp() {
     const [serial, setSerial] = useState("");
     const [installation, setInstallation] = useState("");
-    const [canisters, setCanisters] = useState([]);
+    // Initialize canisters from localStorage if available, else default to empty array
+    const [canisters, setCanisters] = useState(() => {
+        const savedCanisters = localStorage.getItem("canisters");
+        return savedCanisters ? JSON.parse(savedCanisters) : [];
+    });
+
+    useEffect(() => {
+        // Store canisters in localStorage whenever they change
+        localStorage.setItem("canisters", JSON.stringify(canisters));
+    }, [canisters]);
 
     const createCanister = () => {
         if (!serial || !installation) {
@@ -14,12 +23,13 @@ function PepsiApp() {
     
         const newCanister = { serial, installation };
         setCanisters([...canisters, newCanister]);
+        // Reset form fields
         setSerial("");
         setInstallation("");
     };
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'row', height: '100vh', width: '100vw', boxSizing: 'border-box', overflowX: 'hidden' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', height: '100vh', width: '100vw', boxSizing: 'border-box' }}>
           {/* Canister Column */}
           <div style={{ flex: 1, padding: '20px', overflowY: 'auto', boxSizing: 'border-box' }}>
             <h2>Canisters</h2>
