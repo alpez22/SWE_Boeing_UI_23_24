@@ -5,6 +5,7 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 function PepsiApp() {
     const [serial, setSerial] = useState("");
+    const [line, setLine] = useState("")
     const [installation, setInstallation] = useState("");
     const [canisters, setCanisters] = useState(() => {
         const savedCanisters = localStorage.getItem("canisters");
@@ -74,6 +75,17 @@ function PepsiApp() {
           <div style={{ flex: 1, padding: '20px', overflowY: 'auto', boxSizing: 'border-box' }}>
             <h2>Line</h2>
             {/* Content for the Line goes here */}
+            <Col>
+                <Form.Label htmlFor="line">Line #</Form.Label>
+                <Form.Control 
+                    type="text" 
+                    value={line} 
+                    onChange={(e) => setLine(e.target.value)} 
+                    id="line" />
+            
+                <br />
+                <Button onClick={createCanister}>Add Line</Button>
+            </Col>
           </div>
         </div>
     );
