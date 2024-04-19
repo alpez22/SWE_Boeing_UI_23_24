@@ -1,38 +1,186 @@
 import cors from "cors";
 import express from "express";
-import dotenv from 'dotenv';
-import fetch from 'node-fetch';
+// Load environment variables
+import "./loadEnvironment.js";
+import db from "./db/conn.js";
+import { z } from "zod";
+import parseSchema from "./utils/parseSchema.js";
+import addLineSchema from "./schemas/addLineSchema.js";
+import updateLineSchema from "./schemas/updateLineSchema.js";
 
-dotenv.config();
 
 const app = express();
 
-//app.use(express.json());
+app.use(express.json());
 app.use(cors());
 
+app.get("/lines", async (req, res) => {
+    let linesCollection = await db.collection("lines");
+    let results = await linesCollection.find({})
+        .toArray();
+    res.send(results).status(200);
+})
 
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const LineModel = require('./models/Line'); // Assume you've defined this Mongoose model
+app.get("/lines/:id/trash-empties", async (req, res) => {
+    const id = req.params.id;
+    const { page } = req.query
 
-app.use(bodyParser.json());
+    if (!page) {
+        return res.sendStatus(400);
+    }
+    
+    let linesCollection = await db.collection("lines");
 
-// Connect to MongoDB
-mongoose.connect('your_mongodb_connection_string', { useNewUrlParser: true, useUnifiedTopology: true });
+    let line = await linesCollection.find({
+        lineId: id
+    }, {
+        _id: 1
+    })
 
-// Route to update a LINE
-app.post('/update-line', async (req, res) => {
-  const { lineNum } = req.body;
-  const result = await LineModel.findOneAndUpdate({ lineNum }, { canisterInstallationDate: new Date() }, { new: true });
-  if(result) {
-    res.json(result);
-  } else {
-    res.status(404).send('Line not found');
-  }
-});
+    if (!line) {
+        return res.sendStatus(404);
+    }
 
-const listener = app.listen(40001, () => {
+    let trashEmptiesCollection = await db.collection("trashempties");
+    const trashEmpties = await trashEmptiesCollection.find({
+        lineId: id
+    }, {
+        projection: {
+            weight: 1,
+            date: 1
+        }
+    }).sort({ date: -1 }).skip(page * 10).limit(10).toArray();
+
+    const totalTrashEmpties = await trashEmptiesCollection.countDocuments({})
+
+    res.send({
+        trashEmpties: trashEmpties,
+        total: totalTrashEmpties
+    }).status(200);
+})
+
+app.get("/lines/:id/canister-changes", async (req, res) => {
+    const id = req.params.id;
+    const { page } = req.query
+
+    if (!page) {
+        return res.sendStatus(400);
+    }
+    
+    let linesCollection = await db.collection("lines");
+
+    let line = await linesCollection.find({
+        lineId: id
+    }, {
+        _id: 1
+    })
+
+    if (!line) {
+        return res.sendStatus(404);
+    }
+
+    let canisterChangesCollection = await db.collection("canisterchanges");
+    const canisterChanges = await canisterChangesCollection.find({
+        lineId: id
+    }, {
+        projection: {
+            date: 1
+        }
+    }).sort({ date: -1 }).skip(page * 10).limit(10).toArray();
+
+    const totalCanisterChanges = await canisterChangesCollection.countDocuments({})
+
+    res.send({
+        canisterChanges: canisterChanges,
+        total: totalCanisterChanges
+    }).status(200);
+})
+
+app.post("/lines", async (req, res) => {
+    const body = parseSchema(addLineSchema, req.body);
+    if (body) {
+        let linesCollection = await db.collection("lines");
+        let result = await linesCollection.insertOne(body);
+        
+        if (result.acknowledged) {
+            return res.send(200);
+        }
+        else {
+            return res.send(500);
+        }
+    } else {
+        res.send(400);
+    }
+
+})
+
+/* ARDUINO ENDPOINTS */
+app.post("/lines/:id/canister-changes", async (req, res) => {
+    const id = req.params.id
+    let linesCollection = await db.collection("lines")
+    let lineUpdateResult = await linesCollection.updateOne({
+        lineId: id
+    }, {
+        $set: {
+            installationDate: Date.now()
+        }
+    })
+
+    if (lineUpdateResult.matchedCount == 0) {
+        return res.sendStatus(404);
+    }
+
+    let canisterChangesCollection = await db.collection("canisterchanges")
+    let result = await canisterChangesCollection.insertOne({
+        lineId: id,
+        date: Date.now()
+    })
+
+    res.sendStatus(200);
+})
+
+app.put("/lines/:id", async (req, res) => {
+    const id = req.params.id;
+    const body = parseSchema(updateLineSchema, req.body);
+
+    if (!body) {
+        res.sendStatus(400);
+    }
+    let linesCollection = await db.collection("lines");
+    let oldLine = await linesCollection.findOneAndUpdate({
+        lineId: id
+    }, {
+        $set: {
+            weight: body.weight,
+            wasteRate: body.wasteRate
+        }
+    }, {
+        returnDocument: "before",
+        projection: {
+            weight: 1
+        }
+    })
+
+    if (!oldLine) {
+        return res.sendStatus(404);
+    }
+
+    if (oldLine.weight - body.weight > 200) {
+        // Trashcan is emptied
+        let trashEmptiesCollection = await db.collection("trashempties")
+        let result = await trashEmptiesCollection.insertOne({
+            lineId: id,
+            weight: oldLine.weight,
+            date: Date.now()
+        })
+    }
+
+    res.sendStatus(200);
+})
+
+/* --------------------- */
+
+const listener = app.listen(3000, () => {
     console.log(`Your app is listening on port ${listener.address().port}`);
 });
 

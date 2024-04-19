@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import LineCard from '../components/LineCard';
-import { fetchLines } from '../services/apiService';
+import useSWR from 'swr';
+import axios from 'axios';
 
 function PepsiApp() {
-  const [lines, setLines] = useState([]);
+  const Lines = useSWR("http://localhost:3000/lines", (url) => axios.get(url).then(res => res.data));
 
-  useEffect(() => {
-    // Assume fetchLines is a function you will create in apiService.js
-    // It fetches all line data and updates the state
-    fetchLines().then(setLines);
-  }, []);
+  console.log(Lines.data)
+
+  if (!Lines.data) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
-      {lines.map(line => <LineCard key={line.lineNum} line={line} />)}
+      {Lines.data.map(line => <LineCard key={line.lineId} line={line} />)}
     </div>
   );
 }
