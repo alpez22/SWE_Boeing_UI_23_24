@@ -5,16 +5,21 @@ import axios from 'axios';
 
 function PepsiApp() {
   const Lines = useSWR("http://localhost:3000/lines", (url) => axios.get(url).then(res => res.data));
+  const CanisterChanges = useSWR("http://localhost:3000/lines", (url) => axios.get(url).then(res => res.data));
 
+  console.log("Lines data: ");
   console.log(Lines.data)
 
   if (!Lines.data) {
-    return <div>Loading...</div>;
+    return <div><h1>Loading...</h1></div>;
   }
 
   return (
-    <div>
-      {Lines.data.map(line => <LineCard key={line.lineId} line={line} />)}
+    <div className="app-container">
+      <div className="lines-wrapper">
+        {Lines.data.map(line => 
+          <LineCard key={line.lineId} line={line} />)}
+      </div>
     </div>
   );
 }

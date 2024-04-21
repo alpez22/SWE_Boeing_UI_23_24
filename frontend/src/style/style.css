@@ -1,0 +1,114 @@
+.app-container {
+display: flex;
+flex-wrap: wrap;
+gap: 20px;
+justify-content: center;
+align-items: center;
+height: 100vh; /* Full viewport height to center vertically */
+width: 100vw; /* Full viewport width */
+padding: 20px; /* Optional: to prevent content from touching the edges */
+box-sizing: border-box;
+margin: 0 auto;
+}
+  
+.lines-wrapper {
+display: flex;
+flex-wrap: wrap;
+justify-content: flex-start;
+align-items: flex-start;
+gap: 20px; /* Adjust the space between boxes as needed */
+padding: 20px; /* Padding around the entire grid */
+overflow-y: auto; /* Enable vertical scrolling if the content overflows */
+max-height: calc(100vh - 100px); /* Adjust the height as needed, accounting for headers/footers */
+}
+
+.line-card {
+border: 1px solid #ccc;
+padding: 16px;
+width: calc(25% - 20px); /* Four items per row, minus the gap */
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+border-radius: 4px; /* Optional: rounded corners */
+background-color: #fff;
+box-sizing: border-box;
+}
+
+.line-card ul {
+list-style: none; /* Remove bullet points from the list */
+padding: 0;
+width: 100%; /* Full width of the parent container */
+}
+
+.line-card li {
+padding: 8px 0; /* Padding for each list item */
+border-bottom: 1px solid #eee; /* Optional bottom border for each item */
+display: flex;
+justify-content: space-between; /* Spread content to both ends */
+align-items: center;
+}
+
+.line-card li:last-child {
+border-bottom: none; /* Remove border from the last item */
+}
+
+.button-container {
+display: flex; /* Enables flexbox */
+justify-content: space-around; /* Distributes space evenly around the buttons */
+align-items: center; /* Aligns buttons vertically in the center */
+width: 100%; /* Takes full width of the parent container */
+margin-top: 20px; /* Provides some space above the container */
+}
+
+.pair-container {
+border-bottom: 1px solid #eee; /* Border for separating each pair */
+padding: 8px 0; /* Padding for each pair container */
+}
+
+/* Explicitly remove borders from li elements */
+.pair-container li {
+list-style-type: none; /* Remove the bullet point */
+padding: 4px 0; /* Padding for each list item */
+border: none; /* Ensure no border */
+background: none; /* Ensure no background if it's causing the line */
+}
+
+.scrollable-container {
+max-height: 90vh; /* Adjust the height as needed */
+overflow-y: auto; /* This allows vertical scrolling if the content is taller than the container */
+}
+
+.button-group {
+display: flex;
+justify-content: center; /* Center buttons horizontally */
+gap: 8px; /* Space between buttons */
+}
+
+.purple-button {
+background-color: purple !important;
+border-color: purple !important;
+color: white !important;
+}
+
+.purple-button:hover {
+background-color: #ca8dfd !important; /* Darken button on hover */
+border-color: #ca8dfd !important;
+}
+
+.indicator {
+height: 20px;
+width: 20px;
+border-radius: 50%;
+display: inline-block;
+margin-right: 8px;
+}
+
+.red-indicator {
+background-color: red;
+}
+
+.orange-indicator {
+background-color: orange;
+}
+
+.green-indicator {
+background-color: green;
+}
