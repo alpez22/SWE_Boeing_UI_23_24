@@ -115,7 +115,7 @@ app.post("/lines", async (req, res) => {
 })
 
 /* ARDUINO ENDPOINTS */
-app.post("/lines/:id/canister-changes", async (req, res) => {
+app.post("/lines/:id/canister-changes", async (req, res) => { //button for canister being replaced
     const id = req.params.id
     let linesCollection = await db.collection("lines")
     let lineUpdateResult = await linesCollection.updateOne({
@@ -139,7 +139,7 @@ app.post("/lines/:id/canister-changes", async (req, res) => {
     res.sendStatus(200);
 })
 
-app.put("/lines/:id", async (req, res) => {
+app.put("/lines/:id", async (req, res) => { //send weight and waste rate to this api, which will be compared to those constants in frontend && if weight goes below, record on historical
     const id = req.params.id;
     const body = parseSchema(updateLineSchema, req.body);
 

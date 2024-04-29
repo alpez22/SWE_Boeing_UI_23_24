@@ -23,13 +23,18 @@ max-height: calc(100vh - 100px); /* Adjust the height as needed, accounting for 
 }
 
 .line-card {
-border: 1px solid #ccc;
+border: 1.5px solid black;
 padding: 16px;
 width: calc(25% - 20px); /* Four items per row, minus the gap */
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-border-radius: 4px; /* Optional: rounded corners */
+border-radius: 4px;
 background-color: #fff;
 box-sizing: border-box;
+}
+
+.line-card h2 {
+font-size: 32px;
+font-weight: bold;
 }
 
 .line-card ul {
@@ -40,10 +45,11 @@ width: 100%; /* Full width of the parent container */
 
 .line-card li {
 padding: 8px 0; /* Padding for each list item */
-border-bottom: 1px solid #eee; /* Optional bottom border for each item */
+border-bottom: 1px solid lightgray; /* Optional bottom border for each item */
 display: flex;
 justify-content: space-between; /* Spread content to both ends */
 align-items: center;
+font-size: 28px;
 }
 
 .line-card li:last-child {
@@ -61,6 +67,7 @@ margin-top: 20px; /* Provides some space above the container */
 .pair-container {
 border-bottom: 1px solid #eee; /* Border for separating each pair */
 padding: 8px 0; /* Padding for each pair container */
+font-size: 15px;
 }
 
 /* Explicitly remove borders from li elements */
@@ -71,44 +78,35 @@ border: none; /* Ensure no border */
 background: none; /* Ensure no background if it's causing the line */
 }
 
-.scrollable-container {
-max-height: 90vh; /* Adjust the height as needed */
-overflow-y: auto; /* This allows vertical scrolling if the content is taller than the container */
-}
-
-.button-group {
-display: flex;
-justify-content: center; /* Center buttons horizontally */
-gap: 8px; /* Space between buttons */
-}
-
 .purple-button {
 background-color: purple !important;
 border-color: purple !important;
 color: white !important;
+font-size: 22px !important; 
+border: 2px solid black !important;
+font-weight: 500 !important;
 }
 
 .purple-button:hover {
 background-color: #ca8dfd !important; /* Darken button on hover */
 border-color: #ca8dfd !important;
+font-size: 22px !important;
+font-weight: 500 !important;
+}
+
+.indicators {
+display: flex;
+justify-content: space-around;
+align-items: center;
+width: 100%;
+margin-top: 20px;
 }
 
 .indicator {
-height: 20px;
-width: 20px;
-border-radius: 50%;
-display: inline-block;
-margin-right: 8px;
-}
-
-.red-indicator {
-background-color: red;
-}
-
-.orange-indicator {
-background-color: orange;
-}
-
-.green-indicator {
-background-color: green;
+border-radius: 4px;
+padding: 8px 16px;
+color: white;
+font-size: 22px;
+border: 2px solid black;
+font-weight: 500;
 }

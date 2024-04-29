@@ -42,7 +42,7 @@ const closeButtonStyle = {
   position: 'absolute',
   top: '10px',
   right: '10px',
-  fontSize: '1.5em',
+  fontSize: '2.7em',
   cursor: 'pointer',
   border: 'none',
   background: 'none',
