@@ -31,7 +31,7 @@ app.get("/lines/:id/trash-empties", async (req, res) => {
     
     let linesCollection = await db.collection("lines");
 
-    let line = await linesCollection.find({
+    let line = await linesCollection.findOne({
         lineId: id
     }, {
         _id: 1
@@ -51,7 +51,9 @@ app.get("/lines/:id/trash-empties", async (req, res) => {
         }
     }).sort({ date: -1 }).skip(page * 10).limit(10).toArray();
 
-    const totalTrashEmpties = await trashEmptiesCollection.countDocuments({})
+    const totalTrashEmpties = await trashEmptiesCollection.countDocuments({
+        lineId: id
+    })
 
     res.send({
         trashEmpties: trashEmpties,
@@ -69,7 +71,7 @@ app.get("/lines/:id/canister-changes", async (req, res) => {
     
     let linesCollection = await db.collection("lines");
 
-    let line = await linesCollection.find({
+    let line = await linesCollection.findOne({
         lineId: id
     }, {
         _id: 1
@@ -88,7 +90,9 @@ app.get("/lines/:id/canister-changes", async (req, res) => {
         }
     }).sort({ date: -1 }).skip(page * 10).limit(10).toArray();
 
-    const totalCanisterChanges = await canisterChangesCollection.countDocuments({})
+    const totalCanisterChanges = await canisterChangesCollection.countDocuments({
+        lineId: id
+    })
 
     res.send({
         canisterChanges: canisterChanges,

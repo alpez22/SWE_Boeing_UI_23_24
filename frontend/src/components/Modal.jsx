@@ -2,12 +2,12 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 
 
-const Modal = ({ isOpen, onClose, children }) => {
+const Modal = ({ isOpen, onClose, children, contentRef }) => {
   if (!isOpen) return null;
 
   return (
     <div style={backdropStyle} onClick={onClose}> {}
-      <div style={modalStyle} onClick={e => e.stopPropagation()}> {}
+      <div style={modalStyle} onClick={e => e.stopPropagation()} ref={contentRef} className="modal-content">
         <button onClick={onClose} style={closeButtonStyle}>×</button>
         {children}
       </div>

@@ -110,3 +110,46 @@ font-size: 22px;
 border: 2px solid black;
 font-weight: 500;
 }
+
+.load-more-container {
+display: flex;
+justify-content: center;
+margin-top: 20px;
+}
+
+.load-more-container .load-more-button {
+font-size: 28px;
+padding: 10px 20px;
+background-color: #0202a1;
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+
+.load-more-container .load-more-button:hover {
+background-color: #5e7df9;
+}
+
+.modal-content {
+position: relative;
+justify-content: right;
+}
+
+.go-to-top-container .go-to-top-button {
+position: fixed;
+bottom: 150px;
+right: 675px;
+font-size: 25px;
+padding: 10px 20px;
+background-color: rgb(77, 76, 76);
+color: white;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+z-index: 1000;
+}
+
+.go-to-top-container .go-to-top-button:hover {
+background-color: rgb(150, 149, 149);
+}

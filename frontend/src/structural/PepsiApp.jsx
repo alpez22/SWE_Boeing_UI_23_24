@@ -4,8 +4,8 @@ import useSWR from 'swr';
 import axios from 'axios';
 
 /* TRASH in {grams} && CANISTER in {grams per second} */
-/* empty trash can = 3lbs */
-/* full trash can = 16lbs */
+/* empty trash can = 3 lbs */
+/* full trash can = 16 lbs */
 const TRASH_RED_INDICATOR = 6800; //15lbs out of 16 lbs
 const TRASH_ORANGE_INDICATOR = 5800; //13lbs out of 16 lbs
 const TRASH_GREEN_INDICATOR = 0;
@@ -15,7 +15,6 @@ const CANISTER_GREEN_INDICATOR = 0.0;
 
 function PepsiApp() {
   const Lines = useSWR("http://localhost:3000/lines", (url) => axios.get(url).then(res => res.data));
-  // const CanisterChanges = useSWR("http://localhost:3000/lines", (url) => axios.get(url).then(res => res.data));
 
   console.log("Lines data: ");
   console.log(Lines.data)
@@ -24,7 +23,7 @@ function PepsiApp() {
     return <div><h1>Loading...</h1></div>;
   }
 
-  // Utility function to determine indicator color
+  //Utility function to determine indicator color
   const getIndicatorColor = (value, redIndicator, orangeIndicator, greenIndicator) => {
     if (value >= redIndicator) {
       return 'red';
@@ -36,13 +35,14 @@ function PepsiApp() {
     return 'blue'; // default color if none of the conditions are met
   };
 
+  //Trash Indicator Colors
   const colorWeightPriority = {
-    red: 4,
+    red: 3,
     orange: 2,
     green: 1,
     blue: 0, // Assuming blue is the least priority color
   };
-  
+  //Canister Indicator Colors
   const colorWasteRatePriority = {
     red: 3,
     orange: 2,
