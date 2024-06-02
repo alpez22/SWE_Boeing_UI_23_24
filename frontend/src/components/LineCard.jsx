@@ -92,10 +92,6 @@ function LineCard({ line }) {
       setHistoricalTrash(prevTrash => [...prevTrash, ...res.data.trashEmpties]);
       setNextPageTrash(prevPage => prevPage + 1);
     }
-    // setHistoricalTrash([...historicalTrash, ...res.data.trashEmpties])
-    // setCountTrash(countTrash - res.data.trashEmpties.length)
-    // setNextPageTrash(nextPageTrash + 1)
-
   }
 
   async function loadMoreCanister() {
@@ -104,9 +100,6 @@ function LineCard({ line }) {
       setHistoricalCanister(prevCan => [...prevCan, ...res.data.canisterChanges]);
       setNextPageCanister(prevPage => prevPage + 1);
     }
-    // setHistoricalCanister([...historicalCanister, ...res.data.canisterChanges])
-    // setCountCanister(countCanister - res.data.canisterChanges.length)
-    // setNextPageCanister(nextPageCanister + 1)
   }
 
   /* set + refresh trash modal && canister modal  */
@@ -171,11 +164,6 @@ function LineCard({ line }) {
       }
     };
   }, [modalOpenTrash, modalOpenCanister]);
-
-  // console.log("historicalTrash.length = " + historicalTrash.length);
-  // console.log("countTrash = " + countTrash);
-  // console.log("historicalCanister.length = " + historicalCanister.length);
-  // console.log("countCanister = " + countCanister);
 
   return (
     <div className="line-card">

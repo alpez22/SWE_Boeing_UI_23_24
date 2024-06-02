@@ -133,13 +133,12 @@ background-color: #5e7df9;
 
 .modal-content {
 position: relative;
-justify-content: right;
 }
 
 .go-to-top-container .go-to-top-button {
 position: fixed;
-bottom: 150px;
-right: 675px;
+bottom: 150px; /* change this dependent on the size of the screen */
+right: 675px; /* change this dependent on the size of the screen */
 font-size: 25px;
 padding: 10px 20px;
 background-color: rgb(77, 76, 76);
